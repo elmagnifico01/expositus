@@ -1,9 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Lock scroll when mobile menu is open
+  useScrollLock(isOpen);
 
   const navItems = [
     { id: "inicio", label: "Início" },

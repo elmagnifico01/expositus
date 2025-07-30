@@ -1,8 +1,10 @@
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Eye, AlertTriangle, Shield, Zap } from "lucide-react";
+import { Link } from "react-router-dom";
 
 interface HiddenStory {
+  id: string;
   title: string;
   preview: string;
   fullStory: string;
@@ -12,6 +14,7 @@ interface HiddenStory {
 
 const hiddenStories: HiddenStory[] = [
   {
+    id: "revolta-silenciosa-1960",
     title: "A Revolta Silenciosa de 1960",
     preview: "Uma rebelião organizada por mulheres que nunca chegou aos livros de história...",
     fullStory: "Em 1960, as mulheres das plantações organizaram uma greve silenciosa que paralisou a economia colonial durante semanas. Lideradas por Mãe Rosa, uma anciã respeitada, elas coordenaram uma resistência pacífica mas devastadoramente eficaz. As autoridades coloniais tentaram esconder este evento, mas os relatos orais preservaram esta história de coragem feminina.",
@@ -19,6 +22,7 @@ const hiddenStories: HiddenStory[] = [
     category: "revolt"
   },
   {
+    id: "ouro-que-nunca-existiu",
     title: "O Ouro que Nunca Existiu",
     preview: "Como uma mentira sobre riquezas minerais mudou o destino das ilhas...",
     fullStory: "Entre 1920-1940, rumores falsos sobre depósitos de ouro foram espalhados pelas autoridades para atrair mais colonos e investimento. Esta manipulação levou ao desmatamento de vastas áreas e ao sofrimento de comunidades inteiras que foram forçadas a trabalhar em minas inexistentes. A verdade só foi revelada décadas depois.",
@@ -26,6 +30,7 @@ const hiddenStories: HiddenStory[] = [
     category: "manipulation"
   },
   {
+    id: "rede-secreta-solidariedade",
     title: "A Rede Secreta de Solidariedade",
     preview: "Um sistema clandestino que salvou centenas de vidas durante a repressão...",
     fullStory: "Durante os anos mais duros da repressão colonial, formou-se uma rede secreta de solidariedade entre diferentes comunidades. Usando sinais tradicionais e rotas secretas pelas montanhas, esta rede conseguiu salvar centenas de pessoas da perseguição política e ajudar famílias em dificuldades.",
@@ -33,6 +38,7 @@ const hiddenStories: HiddenStory[] = [
     category: "resistance"
   },
   {
+    id: "escandalo-cacau-fantasma",
     title: "O Escândalo do Cacau Fantasma",
     preview: "Milhões roubados através de plantações que só existiam no papel...",
     fullStory: "Nos anos 80, descobriu-se um esquema onde funcionários corruptos criavam plantações fictícias de cacau para desviar fundos internacionais. O escândalo envolveu políticos de alto escalão e resultou no desaparecimento de milhões de dólares destinados ao desenvolvimento agrícola.",
@@ -90,10 +96,10 @@ export const HiddenStoriesSection = () => {
         {/* Stories Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
           {hiddenStories.map((story, index) => (
-            <Card 
-              key={index}
-              className="group hover:shadow-depth transition-all duration-500 transform hover:scale-105 cursor-pointer overflow-hidden"
-            >
+            <Link key={index} to={`/historia/${story.id}`}>
+              <Card 
+                className="group hover:shadow-depth transition-all duration-500 transform hover:scale-105 cursor-pointer overflow-hidden h-full"
+              >
               <CardContent className="p-0">
                 {/* Category Header */}
                 <div className={`bg-gradient-to-r ${getCategoryColor(story.category)} p-4 text-white`}>
@@ -114,27 +120,13 @@ export const HiddenStoriesSection = () => {
                     {story.preview}
                   </p>
                   
-                  {/* Hidden Full Story */}
-                  <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 max-h-0 group-hover:max-h-96 overflow-hidden">
-                    <div className="border-t border-border pt-4 mt-4">
-                      <p className="text-foreground text-sm leading-relaxed mb-4">
-                        {story.fullStory}
-                      </p>
-                      <Button variant="accent" size="sm" className="w-full">
-                        Aprender Mais
-                      </Button>
-                    </div>
-                  </div>
-
-                  {/* Hover Hint */}
-                  <div className="group-hover:opacity-0 transition-opacity duration-300">
-                    <Button variant="outline" size="sm" className="w-full">
-                      Passar o rato para revelar
-                    </Button>
-                  </div>
+                  <Button variant="tropical" size="sm" className="w-full mt-4">
+                    Ler História Completa
+                  </Button>
                 </div>
               </CardContent>
-            </Card>
+              </Card>
+            </Link>
           ))}
         </div>
 
