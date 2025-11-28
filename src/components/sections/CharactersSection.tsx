@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Crown, Users, BookOpen, Zap } from "lucide-react";
+import { X, Crown, Users, BookOpen, Zap, Quote } from "lucide-react";
+import { useScrollLock } from "@/hooks/useScrollLock";
 import charactersImage from "@/assets/personagens-illustration.jpg";
 
 interface Character {
@@ -20,16 +19,16 @@ const characters: Character[] = [
     role: "Primeiro Presidente",
     period: "1975-1991",
     description: "Líder da independência e figura central na formação do estado moderno de São Tomé e Príncipe.",
-    impact: "Conduziu o país à independência e estabeleceu as bases do estado são-tomense moderno, apesar dos desafios do período pós-colonial.",
+    impact: "Conduziu o país à independência e estabeleceu as bases do estado são-tomense moderno.",
     type: "leader",
     quote: "A independência é apenas o primeiro passo. O verdadeiro desafio é construir uma nação justa e próspera."
   },
   {
-    name: "Mãe Antónia (Dona Antónia)",
+    name: "Mãe Antónia",
     role: "Líder Comunitária",
     period: "1940-1980",
-    description: "Parteira e curandeira tradicional que se tornou uma figura respeitada de resistência pacífica durante o período colonial.",
-    impact: "Preservou tradições médicas africanas e organizou redes de apoio comunitário que salvaram inúmeras vidas.",
+    description: "Parteira e curandeira tradicional que se tornou uma figura respeitada de resistência pacífica.",
+    impact: "Preservou tradições médicas africanas e organizou redes de apoio comunitário.",
     type: "people",
     quote: "A nossa força está na união. Quando cuidamos uns dos outros, ninguém nos pode vencer."
   },
@@ -37,26 +36,26 @@ const characters: Character[] = [
     name: "Francisco Tenreiro",
     role: "Poeta e Geógrafo",
     period: "1921-1963",
-    description: "Primeiro poeta são-tomense de renome internacional, pioneiro da literatura de expressão portuguesa em África.",
-    impact: "Deu voz poética à experiência são-tomense e influenciou uma geração de escritores africanos.",
+    description: "Primeiro poeta são-tomense de renome internacional, pioneiro da literatura africana.",
+    impact: "Deu voz poética à experiência são-tomense e influenciou gerações de escritores.",
     type: "intellectual",
-    quote: "Sou africano, sou são-tomense, sou universal. A minha palavra é ponte entre mundos."
+    quote: "Sou africano, sou são-tomense, sou universal."
   },
   {
     name: "Carlos Graça",
     role: "Ativista Estudantil",
     period: "1960-1975",
-    description: "Jovem estudante que organizou protestos pacíficos e redes de conscientização política durante os anos finais do colonialismo.",
-    impact: "Mobilizou a juventude são-tomense para a causa da independência através da educação e organização comunitária.",
+    description: "Jovem estudante que organizou protestos pacíficos durante os anos finais do colonialismo.",
+    impact: "Mobilizou a juventude são-tomense para a causa da independência.",
     type: "activist",
-    quote: "Os jovens são o motor da mudança. É nossa responsabilidade construir o futuro que queremos ver."
+    quote: "Os jovens são o motor da mudança."
   },
   {
     name: "Alda Graça do Espírito Santo",
     role: "Poetisa e Ativista",
     period: "1926-2010",
-    description: "Poetisa revolucionária e uma das vozes mais importantes da literatura são-tomense, lutadora incansável pelos direitos da mulher.",
-    impact: "Através da sua poesia e ativismo, deu visibilidade às questões sociais e de género em São Tomé e Príncipe.",
+    description: "Poetisa revolucionária e lutadora incansável pelos direitos da mulher.",
+    impact: "Através da sua poesia e ativismo, deu visibilidade às questões sociais e de género.",
     type: "intellectual",
     quote: "Escrevo com o sangue do meu povo, com a dor e a esperança de quem não tem voz."
   },
@@ -64,214 +63,175 @@ const characters: Character[] = [
     name: "Tomé Vera Cruz",
     role: "Pescador e Líder Sindical",
     period: "1950-1990",
-    description: "Pescador que se tornou líder sindical, organizando os trabalhadores da pesca para melhores condições de trabalho.",
-    impact: "Estabeleceu os primeiros sindicatos de pescadores e melhorou significativamente as condições de trabalho no setor pesqueiro.",
+    description: "Pescador que se tornou líder sindical, organizando os trabalhadores da pesca.",
+    impact: "Estabeleceu os primeiros sindicatos de pescadores e melhorou condições de trabalho.",
     type: "people",
     quote: "O mar nos dá sustento, mas unidos conseguimos muito mais do que peixe."
   }
 ];
 
+const getTypeInfo = (type: string) => {
+  switch (type) {
+    case "leader": return { icon: Crown, label: "Líder", color: "bg-primary text-primary-foreground" };
+    case "people": return { icon: Users, label: "Povo", color: "bg-accent text-accent-foreground" };
+    case "intellectual": return { icon: BookOpen, label: "Intelectual", color: "bg-secondary text-secondary-foreground" };
+    case "activist": return { icon: Zap, label: "Ativista", color: "bg-warm text-warm-foreground" };
+    default: return { icon: Users, label: "Pessoa", color: "bg-muted text-muted-foreground" };
+  }
+};
+
 export const CharactersSection = () => {
   const [selectedCharacter, setSelectedCharacter] = useState<Character | null>(null);
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case "leader":
-        return <Crown className="w-5 h-5" />;
-      case "people":
-        return <Users className="w-5 h-5" />;
-      case "intellectual":
-        return <BookOpen className="w-5 h-5" />;
-      case "activist":
-        return <Zap className="w-5 h-5" />;
-      default:
-        return <Users className="w-5 h-5" />;
-    }
-  };
-
-  const getTypeColor = (type: string) => {
-    switch (type) {
-      case "leader":
-        return "bg-primary text-primary-foreground";
-      case "people":
-        return "bg-accent text-accent-foreground";
-      case "intellectual":
-        return "bg-secondary text-secondary-foreground";
-      case "activist":
-        return "bg-warm text-warm-foreground";
-      default:
-        return "bg-muted text-muted-foreground";
-    }
-  };
-
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case "leader":
-        return "Líder";
-      case "people":
-        return "Povo";
-      case "intellectual":
-        return "Intelectual";
-      case "activist":
-        return "Ativista";
-      default:
-        return "Pessoa";
-    }
-  };
+  useScrollLock(!!selectedCharacter);
 
   return (
-    <section id="personagens" className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="personagens" className="section-padding bg-background relative overflow-hidden">
+      <div className="container">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <p className="text-primary font-medium tracking-wider uppercase text-sm mb-4">
+            Quem Fez a Diferença
+          </p>
+          <h2 className="text-foreground mb-6">
             Personagens Cruciais
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
             As pessoas que moldaram a nossa história. Desde líderes famosos até 
-            heróis anónimos que fizeram a diferença nas suas comunidades.
+            heróis anónimos que fizeram a diferença.
           </p>
+          <div className="divider mt-8" />
         </div>
 
-        {/* Background Image */}
-        <div className="relative mb-12">
+        {/* Featured Image */}
+        <div className="relative mb-16 rounded-3xl overflow-hidden max-w-5xl mx-auto">
           <img 
             src={charactersImage} 
-            alt="Personagens históricos de São Tomé e Príncipe" 
-            className="w-full h-64 md:h-80 object-cover rounded-xl shadow-depth"
+            alt="Personagens históricos" 
+            className="w-full h-64 md:h-80 object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent rounded-xl flex items-end">
-            <div className="p-8 text-white">
-              <h3 className="text-2xl md:text-3xl font-bold mb-2">
-                Heróis da Nossa Terra
-              </h3>
-              <p className="text-white/90 text-lg">
-                Cada pessoa fez a diferença na sua época
-              </p>
-            </div>
+          <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-foreground/20 to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 p-6 md:p-10">
+            <h3 className="text-white text-2xl md:text-3xl font-heading font-bold mb-2">
+              Heróis da Nossa Terra
+            </h3>
+            <p className="text-white/80 text-lg">
+              Cada pessoa fez a diferença na sua época
+            </p>
           </div>
         </div>
 
         {/* Characters Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {characters.map((character, index) => (
-            <Card 
-              key={index}
-              className="hover:shadow-tropical transition-all duration-300 transform hover:scale-105 cursor-pointer overflow-hidden group"
-              onClick={() => setSelectedCharacter(character)}
-            >
-              <CardContent className="p-6">
-                {/* Type Badge */}
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold mb-4 ${getTypeColor(character.type)}`}>
-                  {getTypeIcon(character.type)}
-                  {getTypeLabel(character.type)}
-                </div>
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {characters.map((character) => {
+            const typeInfo = getTypeInfo(character.type);
+            const Icon = typeInfo.icon;
+            return (
+              <button
+                key={character.name}
+                onClick={() => setSelectedCharacter(character)}
+                className="group text-left bg-card rounded-2xl p-6 shadow-card transition-all duration-500 hover:shadow-lg hover:-translate-y-1"
+              >
+                {/* Badge */}
+                <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 ${typeInfo.color}`}>
+                  <Icon className="w-3.5 h-3.5" />
+                  {typeInfo.label}
+                </span>
 
-                {/* Character Info */}
-                <h3 className="text-xl font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
+                {/* Info */}
+                <h3 className="text-foreground group-hover:text-primary transition-colors mb-1 text-xl font-semibold">
                   {character.name}
                 </h3>
-                <p className="text-primary font-semibold mb-1">
+                <p className="text-primary/80 font-medium text-sm mb-1">
                   {character.role}
                 </p>
-                <p className="text-muted-foreground text-sm mb-4">
+                <p className="text-muted-foreground text-xs mb-4">
                   {character.period}
                 </p>
-                <p className="text-foreground text-sm leading-relaxed">
+                <p className="text-muted-foreground text-sm leading-relaxed line-clamp-2">
                   {character.description}
                 </p>
 
                 {/* Quote Preview */}
                 {character.quote && (
-                  <div className="mt-4 p-3 bg-muted/50 rounded-lg border-l-4 border-primary">
-                    <p className="text-sm italic text-muted-foreground">
-                      "{character.quote.slice(0, 50)}..."
+                  <div className="mt-4 pt-4 border-t border-border">
+                    <p className="text-muted-foreground text-sm italic line-clamp-2">
+                      "{character.quote}"
                     </p>
                   </div>
                 )}
-              </CardContent>
-            </Card>
-          ))}
+              </button>
+            );
+          })}
         </div>
-
-        {/* Character Details Modal */}
-        {selectedCharacter && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fade-in"
-               onClick={() => setSelectedCharacter(null)}>
-            <Card className="max-w-3xl w-full max-h-[90vh] overflow-y-auto animate-slide-up"
-                  onClick={(e) => e.stopPropagation()}>
-              <CardContent className="p-8">
-                {/* Header */}
-                <div className="flex items-start justify-between mb-6">
-                  <div>
-                    <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold mb-3 ${getTypeColor(selectedCharacter.type)}`}>
-                      {getTypeIcon(selectedCharacter.type)}
-                      {getTypeLabel(selectedCharacter.type)}
-                    </div>
-                    <h3 className="text-3xl font-bold text-foreground mb-2">
-                      {selectedCharacter.name}
-                    </h3>
-                    <p className="text-xl text-primary font-semibold">
-                      {selectedCharacter.role}
-                    </p>
-                    <p className="text-muted-foreground">
-                      {selectedCharacter.period}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Description */}
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-foreground mb-3">
-                    Biografia
-                  </h4>
-                  <p className="text-foreground leading-relaxed">
-                    {selectedCharacter.description}
-                  </p>
-                </div>
-
-                {/* Impact */}
-                <div className="mb-6">
-                  <h4 className="text-lg font-semibold text-foreground mb-3">
-                    Impacto Histórico
-                  </h4>
-                  <p className="text-foreground leading-relaxed">
-                    {selectedCharacter.impact}
-                  </p>
-                </div>
-
-                {/* Quote */}
-                {selectedCharacter.quote && (
-                  <div className="mb-6">
-                    <h4 className="text-lg font-semibold text-foreground mb-3">
-                      Citação Memorável
-                    </h4>
-                    <div className="p-4 bg-gradient-warm rounded-lg">
-                      <p className="text-warm-foreground italic text-lg leading-relaxed">
-                        "{selectedCharacter.quote}"
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {/* Actions */}
-                <div className="flex gap-3">
-                  <Button 
-                    variant="tropical" 
-                    onClick={() => setSelectedCharacter(null)}
-                    className="flex-1"
-                  >
-                    Continuar Explorando
-                  </Button>
-                  <Button variant="outline" className="flex-1">
-                    Partilhar História
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        )}
       </div>
+
+      {/* Modal */}
+      {selectedCharacter && (
+        <div 
+          className="fixed inset-0 bg-foreground/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in"
+          onClick={() => setSelectedCharacter(null)}
+        >
+          <div 
+            className="bg-card rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-xl animate-scale-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className="p-6 md:p-8 border-b border-border">
+              <div className="flex items-start justify-between gap-4">
+                <div>
+                  {(() => {
+                    const typeInfo = getTypeInfo(selectedCharacter.type);
+                    const Icon = typeInfo.icon;
+                    return (
+                      <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-3 ${typeInfo.color}`}>
+                        <Icon className="w-3.5 h-3.5" />
+                        {typeInfo.label}
+                      </span>
+                    );
+                  })()}
+                  <h3 className="text-foreground text-2xl md:text-3xl font-heading font-bold mb-1">
+                    {selectedCharacter.name}
+                  </h3>
+                  <p className="text-primary font-semibold">{selectedCharacter.role}</p>
+                  <p className="text-muted-foreground text-sm">{selectedCharacter.period}</p>
+                </div>
+                <button 
+                  onClick={() => setSelectedCharacter(null)}
+                  className="text-muted-foreground hover:text-foreground transition-colors p-2 hover:bg-muted rounded-full"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            
+            {/* Content */}
+            <div className="p-6 md:p-8 space-y-6">
+              <div>
+                <h4 className="text-foreground font-semibold mb-2">Biografia</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  {selectedCharacter.description}
+                </p>
+              </div>
+
+              <div>
+                <h4 className="text-foreground font-semibold mb-2">Impacto Histórico</h4>
+                <p className="text-muted-foreground leading-relaxed">
+                  {selectedCharacter.impact}
+                </p>
+              </div>
+
+              {selectedCharacter.quote && (
+                <div className="bg-gradient-warm rounded-2xl p-6">
+                  <Quote className="w-8 h-8 text-warm-foreground/50 mb-3" />
+                  <p className="text-warm-foreground text-lg italic leading-relaxed">
+                    "{selectedCharacter.quote}"
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

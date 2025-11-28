@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Calendar, MapPin, Users } from "lucide-react";
-import timelineImage from "@/assets/timeline-illustration.jpg";
+import { X } from "lucide-react";
+import { useScrollLock } from "@/hooks/useScrollLock";
 
 interface TimelineEvent {
   year: string;
@@ -37,7 +35,7 @@ const timelineEvents: TimelineEvent[] = [
   {
     year: "1953",
     title: "Massacre de Batepá",
-    description: "Revolta popular brutalmente reprimida pelas autoridades coloniais.",
+    description: "Revolta popular brutalmente reprimida.",
     type: "independence",
     details: "Centenas de são-tomenses foram mortos numa das mais violentas represálias do período colonial. Este evento marcou profundamente a luta pela independência."
   },
@@ -66,127 +64,128 @@ const timelineEvents: TimelineEvent[] = [
 
 export const TimelineSection = () => {
   const [selectedEvent, setSelectedEvent] = useState<TimelineEvent | null>(null);
+  useScrollLock(!!selectedEvent);
 
   const getEventColor = (type: string) => {
     switch (type) {
-      case "colonial":
-        return "bg-warm text-warm-foreground";
-      case "independence":
-        return "bg-accent text-accent-foreground";
-      case "democracy":
-        return "bg-secondary text-secondary-foreground";
-      case "modern":
-        return "bg-primary text-primary-foreground";
-      default:
-        return "bg-muted text-muted-foreground";
+      case "colonial": return "bg-warm";
+      case "independence": return "bg-accent";
+      case "democracy": return "bg-secondary";
+      case "modern": return "bg-primary";
+      default: return "bg-muted";
     }
   };
 
   return (
-    <section id="linha-tempo" className="py-20 bg-background">
-      <div className="container mx-auto px-4">
+    <section id="linha-tempo" className="section-padding bg-background relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute top-0 right-0 w-1/2 h-1/2 bg-gradient-to-bl from-primary/5 to-transparent rounded-full blur-3xl" />
+      
+      <div className="container relative">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        <div className="max-w-3xl mx-auto text-center mb-20">
+          <p className="text-primary font-medium tracking-wider uppercase text-sm mb-4">
+            Através dos Tempos
+          </p>
+          <h2 className="text-foreground mb-6">
             Linha do Tempo
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
             Uma jornada através dos momentos que definiram a nossa história, 
             desde a chegada dos primeiros navegadores até aos dias de hoje.
           </p>
-        </div>
-
-        {/* Background Image */}
-        <div className="relative mb-12">
-          <img 
-            src={timelineImage} 
-            alt="Ilustração da história de São Tomé e Príncipe" 
-            className="w-full h-64 md:h-80 object-cover rounded-xl shadow-depth"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/30 to-transparent rounded-xl"></div>
+          <div className="divider mt-8" />
         </div>
 
         {/* Timeline */}
-        <div className="relative">
-          {/* Timeline Line */}
-          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-1 bg-gradient-tropical md:transform md:-translate-x-1/2"></div>
+        <div className="relative max-w-4xl mx-auto">
+          {/* Vertical Line */}
+          <div className="absolute left-4 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-border to-transparent md:-translate-x-px" />
 
-          {/* Timeline Events */}
-          <div className="space-y-12">
+          {/* Events */}
+          <div className="space-y-12 md:space-y-16">
             {timelineEvents.map((event, index) => (
               <div
                 key={event.year}
-                className={`relative flex items-center ${
+                className={`relative flex items-start gap-8 ${
                   index % 2 === 0 ? "md:flex-row" : "md:flex-row-reverse"
-                } flex-col md:flex-row`}
+                }`}
               >
-                {/* Timeline Dot */}
-                <div className="absolute left-4 md:left-1/2 w-6 h-6 bg-primary rounded-full border-4 border-background shadow-warm md:transform md:-translate-x-1/2 z-10 animate-glow"></div>
+                {/* Dot */}
+                <div className="absolute left-4 md:left-1/2 w-3 h-3 -translate-x-1/2 mt-2">
+                  <div className={`w-full h-full rounded-full ${getEventColor(event.type)} ring-4 ring-background`} />
+                </div>
 
                 {/* Content */}
-                <div className={`w-full md:w-5/12 ml-12 md:ml-0 ${index % 2 === 0 ? "md:mr-8" : "md:ml-8"}`}>
-                  <Card className="hover:shadow-tropical transition-all duration-300 transform hover:scale-105 cursor-pointer"
-                        onClick={() => setSelectedEvent(event)}>
-                    <CardContent className="p-6">
-                      <div className="flex items-center gap-3 mb-3">
-                        <span className={`px-3 py-1 rounded-full text-sm font-semibold ${getEventColor(event.type)}`}>
-                          {event.year}
-                        </span>
-                        <Calendar className="w-4 h-4 text-primary" />
-                      </div>
-                      <h3 className="text-xl font-bold text-foreground mb-2">
+                <div className={`flex-1 ml-12 md:ml-0 ${index % 2 === 0 ? "md:pr-12 md:text-right" : "md:pl-12"}`}>
+                  <button
+                    onClick={() => setSelectedEvent(event)}
+                    className="group text-left md:text-inherit w-full"
+                  >
+                    <div className="bg-card rounded-2xl p-6 shadow-card transition-all duration-500 hover:shadow-lg hover:-translate-y-1">
+                      <span className={`inline-block px-3 py-1 rounded-full text-xs font-semibold text-white mb-3 ${getEventColor(event.type)}`}>
+                        {event.year}
+                      </span>
+                      <h3 className="text-foreground group-hover:text-primary transition-colors mb-2">
                         {event.title}
                       </h3>
-                      <p className="text-muted-foreground">
+                      <p className="text-muted-foreground text-sm leading-relaxed">
                         {event.description}
                       </p>
-                    </CardContent>
-                  </Card>
+                    </div>
+                  </button>
                 </div>
+
+                {/* Spacer for alternating layout */}
+                <div className="hidden md:block flex-1" />
               </div>
             ))}
           </div>
         </div>
-
-        {/* Event Details Modal */}
-        {selectedEvent && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center p-4 z-50 animate-fade-in"
-               onClick={() => setSelectedEvent(null)}>
-            <Card className="max-w-2xl w-full animate-scale-in"
-                  onClick={(e) => e.stopPropagation()}>
-              <CardContent className="p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <span className={`px-4 py-2 rounded-full text-lg font-bold ${getEventColor(selectedEvent.type)}`}>
-                    {selectedEvent.year}
-                  </span>
-                  <div className="flex items-center gap-2 text-primary">
-                    <MapPin className="w-5 h-5" />
-                    <Users className="w-5 h-5" />
-                  </div>
-                </div>
-                <h3 className="text-2xl font-bold text-foreground mb-4">
-                  {selectedEvent.title}
-                </h3>
-                <p className="text-lg text-muted-foreground mb-6">
-                  {selectedEvent.description}
-                </p>
-                {selectedEvent.details && (
-                  <p className="text-foreground leading-relaxed mb-6">
-                    {selectedEvent.details}
-                  </p>
-                )}
-                <Button 
-                  variant="tropical" 
-                  onClick={() => setSelectedEvent(null)}
-                  className="w-full"
-                >
-                  Continuar Explorando
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        )}
       </div>
+
+      {/* Modal */}
+      {selectedEvent && (
+        <div 
+          className="fixed inset-0 bg-foreground/60 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in"
+          onClick={() => setSelectedEvent(null)}
+        >
+          <div 
+            className="bg-card rounded-3xl max-w-lg w-full shadow-xl animate-scale-in overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Header */}
+            <div className={`${getEventColor(selectedEvent.type)} p-6`}>
+              <div className="flex items-start justify-between">
+                <div>
+                  <span className="text-white/80 text-sm font-medium">{selectedEvent.year}</span>
+                  <h3 className="text-white text-2xl font-heading font-bold mt-1">
+                    {selectedEvent.title}
+                  </h3>
+                </div>
+                <button 
+                  onClick={() => setSelectedEvent(null)}
+                  className="text-white/80 hover:text-white transition-colors p-1"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+            
+            {/* Content */}
+            <div className="p-6">
+              <p className="text-muted-foreground mb-4">
+                {selectedEvent.description}
+              </p>
+              {selectedEvent.details && (
+                <p className="text-foreground leading-relaxed">
+                  {selectedEvent.details}
+                </p>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 };

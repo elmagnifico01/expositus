@@ -1,218 +1,140 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { MapPin, Coffee, Music, Palette, Globe, Star } from "lucide-react";
+import { MapPin, Coffee, Music, Palette, Globe, Mountain } from "lucide-react";
 
 interface Curiosity {
   title: string;
   description: string;
-  details: string;
   icon: React.ReactNode;
-  category: "geography" | "culture" | "language" | "food" | "nature" | "unique";
+  category: string;
+  color: string;
 }
 
 const curiosities: Curiosity[] = [
   {
     title: "O País Mais Pequeno de África",
-    description: "São Tomé e Príncipe é o segundo país mais pequeno de África, mas tem uma biodiversidade impressionante.",
-    details: "Com apenas 1.001 km², o país é ligeiramente menor que a cidade de Londres, mas abriga espécies únicas de plantas e animais que não existem em mais nenhum lugar do mundo. A densidade de espécies endémicas por km² é uma das mais altas do planeta.",
-    icon: <MapPin className="w-6 h-6" />,
-    category: "geography"
+    description: "Com apenas 1.001 km², abriga espécies únicas que não existem em mais nenhum lugar do mundo.",
+    icon: <MapPin className="w-5 h-5" />,
+    category: "Geografia",
+    color: "bg-primary text-primary-foreground"
   },
   {
     title: "A Língua Forro",
-    description: "O crioulo forro é uma mistura única de português com línguas africanas e tem expressões fascinantes.",
-    details: "Expressões como 'Leve sa ku bo' (vai com Deus) e 'N ka ten sede' (tenho saudades) mostram a rica mistura cultural. A língua preserva elementos das línguas bantu misturados com português antigo, criando uma forma única de expressão cultural.",
-    icon: <Globe className="w-6 h-6" />,
-    category: "language"
+    description: "Um crioulo único que mistura português antigo com línguas bantu, criando expressões fascinantes.",
+    icon: <Globe className="w-5 h-5" />,
+    category: "Língua",
+    color: "bg-secondary text-secondary-foreground"
   },
   {
     title: "O Cacau Mais Fino do Mundo",
-    description: "São Tomé produz um dos cacaus mais premium do mundo, com sabor único devido ao solo vulcânico.",
-    details: "O cacau são-tomense é considerado 'fine flavor' pelos padrões internacionais. O solo vulcânico rico e o clima tropical húmido criam condições perfeitas para um cacau com notas frutadas e florais distintivas, muito procurado pelos melhores chocolateiros do mundo.",
-    icon: <Coffee className="w-6 h-6" />,
-    category: "food"
+    description: "O solo vulcânico cria um cacau 'fine flavor' muito procurado pelos melhores chocolateiros.",
+    icon: <Coffee className="w-5 h-5" />,
+    category: "Gastronomia",
+    color: "bg-warm text-warm-foreground"
   },
   {
     title: "Danço Congo e Puíta",
-    description: "Danças tradicionais que contam histórias através de movimentos e ritmos únicos.",
-    details: "O Danço Congo representa a resistência cultural africana, com máscaras coloridas e movimentos que imitam animais. A Puíta é uma dança sensual que celebra a feminilidade. Ambas são Património Cultural Imaterial e continuam vivas nas festas populares.",
-    icon: <Music className="w-6 h-6" />,
-    category: "culture"
+    description: "Danças tradicionais que contam histórias através de movimentos e ritmos únicos africanos.",
+    icon: <Music className="w-5 h-5" />,
+    category: "Cultura",
+    color: "bg-accent text-accent-foreground"
   },
   {
     title: "Arte Tchiloli",
-    description: "Uma forma teatral única que mistura tradições europeias e africanas.",
-    details: "O Tchiloli é um auto popular baseado na 'Tragédia do Marquês de Mântua', mas reinterpretado com elementos africanos. As representações incluem máscaras, danças e músicas tradicionais, criando uma arte performativa completamente original.",
-    icon: <Palette className="w-6 h-6" />,
-    category: "culture"
+    description: "Uma forma teatral única que mistura tradições europeias e africanas com máscaras coloridas.",
+    icon: <Palette className="w-5 h-5" />,
+    category: "Cultura",
+    color: "bg-accent text-accent-foreground"
   },
   {
     title: "Pico de São Tomé",
-    description: "O ponto mais alto do país oferece uma vista espetacular e biodiversidade única.",
-    details: "Com 2.024 metros de altitude, o Pico de São Tomé é um vulcão extinto coberto por floresta nativa. A subida revela diferentes ecosistemas: desde florestas tropicais na base até vegetação de montanha no topo. É habitat de espécies raras como o íbis-de-são-tomé.",
-    icon: <Star className="w-6 h-6" />,
-    category: "nature"
+    description: "Com 2.024 metros, este vulcão extinto é habitat de espécies raras como o íbis-de-são-tomé.",
+    icon: <Mountain className="w-5 h-5" />,
+    category: "Natureza",
+    color: "bg-accent text-accent-foreground"
   }
 ];
 
+const forroExpressions = [
+  { forro: "Leve sa ku bo", meaning: "Vai com Deus (despedida)" },
+  { forro: "Ô minu môsu", meaning: "Oh meu rapaz/rapariga" },
+  { forro: "N ka ten sede", meaning: "Tenho saudades" },
+  { forro: "Ku sa ben", meaning: "Que sejas bem-vindo" }
+];
+
 export const CuriositiesSection = () => {
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "geography":
-        return "bg-primary text-primary-foreground";
-      case "culture":
-        return "bg-accent text-accent-foreground";
-      case "language":
-        return "bg-secondary text-secondary-foreground";
-      case "food":
-        return "bg-warm text-warm-foreground";
-      case "nature":
-        return "bg-accent text-accent-foreground";
-      case "unique":
-        return "bg-primary text-primary-foreground";
-      default:
-        return "bg-muted text-muted-foreground";
-    }
-  };
-
-  const getCategoryLabel = (category: string) => {
-    switch (category) {
-      case "geography":
-        return "Geografia";
-      case "culture":
-        return "Cultura";
-      case "language":
-        return "Língua";
-      case "food":
-        return "Gastronomia";
-      case "nature":
-        return "Natureza";
-      case "unique":
-        return "Único";
-      default:
-        return "Curiosidade";
-    }
-  };
-
   return (
-    <section id="curiosidades" className="py-20 bg-muted/20">
-      <div className="container mx-auto px-4">
+    <section id="curiosidades" className="section-padding bg-muted/30 relative overflow-hidden">
+      <div className="absolute top-0 left-0 w-full h-1/2 bg-gradient-to-b from-primary/5 to-transparent" />
+      
+      <div className="container relative">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <p className="text-primary font-medium tracking-wider uppercase text-sm mb-4">
+            Descobre Mais
+          </p>
+          <h2 className="text-foreground mb-6">
             Curiosidades e Cultura
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            Detalhes fascinantes sobre a nossa terra que talvez não conhecesses. 
-            Desde a nossa biodiversidade única até às tradições mais especiais.
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
+            Detalhes fascinantes sobre a nossa terra que talvez não conhecesses.
           </p>
-          <div className="w-24 h-1 bg-gradient-tropical mx-auto mt-6 rounded-full"></div>
+          <div className="divider mt-8" />
         </div>
 
-        {/* Fun Fact */}
-        <div className="bg-gradient-tropical p-6 rounded-xl shadow-tropical mb-12 max-w-3xl mx-auto text-center">
-          <h3 className="text-2xl font-bold text-foreground mb-3">
-            Sabias que...?
-          </h3>
-          <p className="text-foreground text-lg">
+        {/* Fun Fact Banner */}
+        <div className="bg-gradient-tropical rounded-2xl p-6 md:p-8 text-center max-w-3xl mx-auto mb-16 shadow-glow">
+          <p className="text-primary-foreground text-sm font-medium uppercase tracking-wider mb-2">Sabias que...?</p>
+          <p className="text-primary-foreground text-lg md:text-xl font-medium leading-relaxed">
             São Tomé e Príncipe foi o primeiro país tropical a abolir a escravatura 
             e tem mais espécies de plantas por km² do que qualquer outro país africano!
           </p>
         </div>
 
         {/* Curiosities Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
           {curiosities.map((curiosity, index) => (
-            <Card 
+            <article 
               key={index}
-              className="group hover:shadow-depth transition-all duration-300 transform hover:scale-105 overflow-hidden"
+              className="group bg-card rounded-2xl p-6 shadow-card transition-all duration-500 hover:shadow-lg hover:-translate-y-1"
             >
-              <CardContent className="p-6">
-                {/* Category Badge */}
-                <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm font-semibold mb-4 ${getCategoryColor(curiosity.category)}`}>
-                  {curiosity.icon}
-                  {getCategoryLabel(curiosity.category)}
-                </div>
+              {/* Badge */}
+              <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold mb-4 ${curiosity.color}`}>
+                {curiosity.icon}
+                {curiosity.category}
+              </span>
 
-                {/* Title */}
-                <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
-                  {curiosity.title}
-                </h3>
-
-                {/* Description */}
-                <p className="text-muted-foreground mb-4 leading-relaxed">
-                  {curiosity.description}
-                </p>
-
-                {/* Details (revealed on hover) */}
-                <div className="max-h-0 opacity-0 group-hover:max-h-96 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
-                  <div className="border-t border-border pt-4">
-                    <p className="text-foreground text-sm leading-relaxed mb-4">
-                      {curiosity.details}
-                    </p>
-                    <Button variant="accent" size="sm" className="w-full">
-                      Explorar Mais
-                    </Button>
-                  </div>
-                </div>
-
-                {/* Hover Hint */}
-                <div className="group-hover:opacity-0 transition-opacity duration-300">
-                  <Button variant="outline" size="sm" className="w-full">
-                    Passar o rato para descobrir
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
+              {/* Content */}
+              <h3 className="text-foreground group-hover:text-primary transition-colors text-xl font-semibold mb-3">
+                {curiosity.title}
+              </h3>
+              <p className="text-muted-foreground leading-relaxed">
+                {curiosity.description}
+              </p>
+            </article>
           ))}
         </div>
 
-        {/* Language Examples */}
-        <div className="mt-16 bg-gradient-warm p-8 rounded-xl shadow-depth max-w-4xl mx-auto">
-          <h3 className="text-2xl font-bold text-warm-foreground text-center mb-8">
-            Aprende Algumas Expressões em Forro
+        {/* Forro Language Section */}
+        <div className="bg-gradient-warm rounded-3xl p-8 md:p-10 max-w-4xl mx-auto">
+          <h3 className="text-warm-foreground text-2xl md:text-3xl font-heading font-bold text-center mb-8">
+            Aprende Forro
           </h3>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div className="bg-white/20 p-4 rounded-lg">
-              <p className="text-warm-foreground font-semibold text-lg mb-1">
-                "Leve sa ku bo"
-              </p>
-              <p className="text-warm-foreground/90">
-                Vai com Deus (despedida carinhosa)
-              </p>
-            </div>
-            
-            <div className="bg-white/20 p-4 rounded-lg">
-              <p className="text-warm-foreground font-semibold text-lg mb-1">
-                "Ô minu môsu"
-              </p>
-              <p className="text-warm-foreground/90">
-                Oh meu rapaz/rapariga (carinhoso)
-              </p>
-            </div>
-            
-            <div className="bg-white/20 p-4 rounded-lg">
-              <p className="text-warm-foreground font-semibold text-lg mb-1">
-                "N ka ten sede"
-              </p>
-              <p className="text-warm-foreground/90">
-                Tenho saudades
-              </p>
-            </div>
-            
-            <div className="bg-white/20 p-4 rounded-lg">
-              <p className="text-warm-foreground font-semibold text-lg mb-1">
-                "Ku sa ben"
-              </p>
-              <p className="text-warm-foreground/90">
-                Que sejas bem-vindo
-              </p>
-            </div>
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {forroExpressions.map((expr, index) => (
+              <div key={index} className="bg-white/20 rounded-xl p-4">
+                <p className="text-warm-foreground font-semibold text-lg mb-1">
+                  "{expr.forro}"
+                </p>
+                <p className="text-warm-foreground/80 text-sm">
+                  {expr.meaning}
+                </p>
+              </div>
+            ))}
           </div>
           
-          <div className="text-center mt-6">
-            <Button variant="secondary" size="lg">
+          <div className="text-center">
+            <Button className="bg-white text-warm hover:bg-white/90 rounded-full h-12 px-8 font-semibold">
               Aprender Mais Forro
             </Button>
           </div>

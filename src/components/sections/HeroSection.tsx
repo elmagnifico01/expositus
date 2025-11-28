@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, Play } from "lucide-react";
 import heroImage from "@/assets/hero-sao-tome.jpg";
 
 export const HeroSection = () => {
@@ -11,92 +11,107 @@ export const HeroSection = () => {
   };
 
   return (
-    <section id="inicio" className="min-h-screen relative overflow-hidden">
-      {/* Background Image */}
-      <div 
-        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-        style={{ backgroundImage: `url(${heroImage})` }}
-      >
-        <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/20 to-black/50"></div>
+    <section id="inicio" className="relative min-h-screen overflow-hidden">
+      {/* Background Image with Ken Burns Effect */}
+      <div className="absolute inset-0">
+        <div 
+          className="absolute inset-0 bg-cover bg-center scale-105 animate-[float_20s_ease-in-out_infinite]"
+          style={{ backgroundImage: `url(${heroImage})` }}
+        />
+        <div className="absolute inset-0 bg-gradient-hero" />
       </div>
 
       {/* Content */}
-      <div className="relative z-10 min-h-screen flex items-center justify-center">
-        <div className="container mx-auto px-4 text-center">
-          <div className="max-w-4xl mx-auto animate-slide-up">
-            {/* Pre-title */}
-            <p className="text-white/90 text-lg md:text-xl mb-4 animate-fade-in">
-              A verdadeira história de
-            </p>
-            
-            {/* Main Title */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold text-white mb-6 leading-tight">
-              São Tomé
-              <br />
-              <span className="bg-gradient-tropical bg-clip-text text-transparent animate-glow">
-                e Príncipe
-              </span>
-            </h1>
-
-            {/* Emotional Hook */}
-            <div className="mb-8">
-              <h2 className="text-2xl md:text-4xl text-white font-semibold mb-4">
-                Conhece mesmo a tua história?
-              </h2>
-              <p className="text-white/80 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
-                Descobre os segredos, as lutas e as vitórias que moldaram o nosso país. 
-                Uma jornada interativa através dos tempos que vai mudar a tua perspectiva.
+      <div className="relative z-10 min-h-screen flex flex-col">
+        {/* Main Content */}
+        <div className="flex-1 flex items-center justify-center pt-20">
+          <div className="container px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              {/* Pre-title */}
+              <p className="text-white/70 text-sm md:text-base font-medium tracking-[0.2em] uppercase mb-6 animate-fade-up">
+                A verdadeira história de
               </p>
-            </div>
+              
+              {/* Main Title */}
+              <h1 className="font-heading text-white mb-6 animate-fade-up" style={{ animationDelay: "100ms" }}>
+                <span className="block text-5xl md:text-7xl lg:text-8xl font-bold mb-2">
+                  São Tomé
+                </span>
+                <span className="block text-5xl md:text-7xl lg:text-8xl font-bold text-gradient">
+                  e Príncipe
+                </span>
+              </h1>
 
-            {/* Call to Action */}
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-12">
-              <Button 
-                variant="hero" 
-                size="xl"
-                onClick={scrollToNextSection}
-                className="min-w-48"
-              >
-                Começar a Jornada
-              </Button>
-              <Button 
-                variant="outline" 
-                size="lg"
-                className="border-white/30 text-white hover:bg-white/10 min-w-48"
-              >
-                Sobre o Projeto
-              </Button>
-            </div>
+              {/* Question Hook */}
+              <p className="text-white/90 text-2xl md:text-3xl lg:text-4xl font-heading font-medium mb-6 animate-fade-up" style={{ animationDelay: "200ms" }}>
+                Conheces mesmo a tua história?
+              </p>
 
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-2xl mx-auto">
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1">500+</div>
-                <div className="text-white/70 text-sm">Anos de História</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1">50+</div>
-                <div className="text-white/70 text-sm">Personagens Cruciais</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl md:text-3xl font-bold text-white mb-1">100+</div>
-                <div className="text-white/70 text-sm">Fatos Ocultos</div>
+              {/* Description */}
+              <p className="text-white/70 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-up" style={{ animationDelay: "300ms" }}>
+                Uma jornada interativa pelos segredos, lutas e vitórias que moldaram a nossa nação.
+              </p>
+
+              {/* CTAs */}
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-fade-up" style={{ animationDelay: "400ms" }}>
+                <Button 
+                  onClick={scrollToNextSection}
+                  className="h-14 px-8 rounded-full text-base font-semibold bg-white text-foreground hover:bg-white/90 transition-all duration-300 hover:scale-105 shadow-xl"
+                >
+                  Começar a Jornada
+                </Button>
+                <Button 
+                  variant="ghost"
+                  className="h-14 px-8 rounded-full text-base font-medium text-white border border-white/30 hover:bg-white/10 hover:border-white/50 transition-all duration-300 group"
+                >
+                  <Play className="w-4 h-4 mr-2 group-hover:scale-110 transition-transform" />
+                  Ver Trailer
+                </Button>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={scrollToNextSection}
-          className="text-white hover:bg-white/10 rounded-full"
-        >
-          <ChevronDown className="w-6 h-6" />
-        </Button>
+        {/* Bottom Stats Bar */}
+        <div className="relative z-10 py-8 md:py-12">
+          <div className="container px-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="grid grid-cols-3 gap-4 md:gap-8">
+                {[
+                  { value: "500+", label: "Anos de História" },
+                  { value: "50+", label: "Personagens" },
+                  { value: "100+", label: "Factos Ocultos" }
+                ].map((stat, index) => (
+                  <div 
+                    key={index} 
+                    className="text-center animate-fade-up"
+                    style={{ animationDelay: `${500 + index * 100}ms` }}
+                  >
+                    <div className="text-2xl md:text-4xl font-heading font-bold text-white mb-1">
+                      {stat.value}
+                    </div>
+                    <div className="text-white/60 text-xs md:text-sm font-medium">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Scroll Indicator */}
+        <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-fade-in" style={{ animationDelay: "800ms" }}>
+          <button
+            onClick={scrollToNextSection}
+            className="flex flex-col items-center gap-2 text-white/60 hover:text-white transition-colors duration-300 group"
+          >
+            <span className="text-xs font-medium tracking-wider uppercase">Explorar</span>
+            <div className="w-8 h-12 rounded-full border-2 border-current flex items-start justify-center p-2">
+              <div className="w-1 h-3 bg-current rounded-full animate-[float_2s_ease-in-out_infinite]" />
+            </div>
+          </button>
+        </div>
       </div>
     </section>
   );

@@ -1,5 +1,3 @@
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { TrendingDown, AlertCircle, Target, Lightbulb, BookOpen, Users } from "lucide-react";
 
 interface Learning {
@@ -14,155 +12,128 @@ const learnings: Learning[] = [
   {
     pastIssue: "Exploração Colonial dos Recursos",
     currentProblem: "Dependência Económica Externa",
-    lesson: "A história mostra-nos que a dependência de uma única fonte económica ou de poderes externos torna o país vulnerável.",
-    solution: "Diversificar a economia, investir na educação técnica e promover o empreendedorismo local para reduzir a dependência externa.",
-    icon: <TrendingDown className="w-6 h-6" />
+    lesson: "A história mostra-nos que a dependência de uma única fonte económica torna o país vulnerável.",
+    solution: "Diversificar a economia, investir na educação técnica e promover o empreendedorismo local.",
+    icon: <TrendingDown className="w-5 h-5" />
   },
   {
     pastIssue: "Falta de Representação Popular",
     currentProblem: "Baixa Participação Cívica",
     lesson: "Quando o povo não participa nas decisões, os resultados raramente beneficiam a maioria.",
-    solution: "Criar mais espaços de participação cívica, educar sobre direitos políticos e facilitar o acesso à informação pública.",
-    icon: <AlertCircle className="w-6 h-6" />
+    solution: "Criar mais espaços de participação cívica e educar sobre direitos políticos.",
+    icon: <AlertCircle className="w-5 h-5" />
   },
   {
     pastIssue: "Corrupção nos Tempos Coloniais",
     currentProblem: "Corrupção nos Dias de Hoje",
-    lesson: "A corrupção sempre foi um problema, mas hoje temos mais ferramentas para a combater se trabalharmos juntos.",
-    solution: "Transparência governamental, educação sobre direitos dos cidadãos e sistemas de fiscalização independente.",
-    icon: <Target className="w-6 h-6" />
+    lesson: "A corrupção sempre foi um problema, mas hoje temos mais ferramentas para a combater.",
+    solution: "Transparência governamental e sistemas de fiscalização independente.",
+    icon: <Target className="w-5 h-5" />
   },
   {
     pastIssue: "Divisões Sociais Impostas",
     currentProblem: "Divisões Políticas e Sociais",
-    lesson: "As divisões enfraquecem-nos. A nossa força sempre veio da união e solidariedade entre comunidades.",
-    solution: "Promover o diálogo inter-comunitário, celebrar a diversidade cultural e focar em objetivos comuns.",
-    icon: <Lightbulb className="w-6 h-6" />
+    lesson: "As divisões enfraquecem-nos. A nossa força sempre veio da união e solidariedade.",
+    solution: "Promover o diálogo inter-comunitário e focar em objetivos comuns.",
+    icon: <Lightbulb className="w-5 h-5" />
   }
 ];
 
 export const LearningsSection = () => {
   return (
-    <section id="aprendizado" className="py-20 bg-muted/20">
-      <div className="container mx-auto px-4">
+    <section id="aprendizado" className="section-padding bg-muted/30 relative overflow-hidden">
+      <div className="absolute bottom-0 left-0 w-1/2 h-1/2 bg-gradient-to-tr from-accent/5 to-transparent rounded-full blur-3xl" />
+      
+      <div className="container relative">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <p className="text-primary font-medium tracking-wider uppercase text-sm mb-4">
+            Lições do Passado
+          </p>
+          <h2 className="text-foreground mb-6">
             O que Aprendemos?
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
             A história repete-se quando não aprendemos com ela. Vamos comparar 
-            os erros do passado com os problemas de hoje para encontrar soluções.
+            os erros do passado com os problemas de hoje.
           </p>
-          <div className="w-24 h-1 bg-gradient-tropical mx-auto mt-6 rounded-full"></div>
+          <div className="divider mt-8" />
         </div>
 
         {/* Learnings Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
+        <div className="grid lg:grid-cols-2 gap-6 max-w-5xl mx-auto mb-16">
           {learnings.map((learning, index) => (
-            <Card 
+            <article 
               key={index}
-              className="hover:shadow-depth transition-all duration-300 transform hover:scale-105 overflow-hidden"
+              className="bg-card rounded-2xl overflow-hidden shadow-card"
             >
-              <CardContent className="p-0">
-                {/* Header with Icon */}
-                <div className="bg-gradient-warm p-6 text-warm-foreground">
-                  <div className="flex items-center gap-3 mb-4">
-                    {learning.icon}
-                    <span className="font-bold text-lg">Lição Histórica</span>
+              {/* Header */}
+              <div className="bg-gradient-warm p-5 flex items-center gap-3">
+                <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center text-warm-foreground">
+                  {learning.icon}
+                </div>
+                <span className="text-warm-foreground font-semibold">Lição Histórica</span>
+              </div>
+
+              <div className="p-6">
+                {/* Past vs Present */}
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="bg-destructive/10 rounded-xl p-4">
+                    <p className="text-destructive text-xs font-semibold uppercase tracking-wider mb-2">Passado</p>
+                    <p className="text-foreground text-sm font-medium">{learning.pastIssue}</p>
+                  </div>
+                  <div className="bg-primary/10 rounded-xl p-4">
+                    <p className="text-primary text-xs font-semibold uppercase tracking-wider mb-2">Hoje</p>
+                    <p className="text-foreground text-sm font-medium">{learning.currentProblem}</p>
                   </div>
                 </div>
 
-                {/* Content */}
-                <div className="p-6">
-                  {/* Past vs Present */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                    {/* Past Issue */}
-                    <div className="p-4 bg-destructive/10 rounded-lg border-l-4 border-destructive">
-                      <h4 className="font-semibold text-destructive mb-2">
-                        Passado
-                      </h4>
-                      <p className="text-sm text-foreground">
-                        {learning.pastIssue}
-                      </p>
-                    </div>
-
-                    {/* Current Problem */}
-                    <div className="p-4 bg-primary/10 rounded-lg border-l-4 border-primary">
-                      <h4 className="font-semibold text-primary mb-2">
-                        Hoje
-                      </h4>
-                      <p className="text-sm text-foreground">
-                        {learning.currentProblem}
-                      </p>
-                    </div>
+                {/* Lesson */}
+                <div className="mb-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Lightbulb className="w-4 h-4 text-primary" />
+                    <span className="text-foreground font-semibold text-sm">A Lição</span>
                   </div>
-
-                  {/* Lesson */}
-                  <div className="mb-6">
-                    <h4 className="font-semibold text-foreground mb-3 flex items-center gap-2">
-                      <Lightbulb className="w-4 h-4 text-primary" />
-                      A Lição
-                    </h4>
-                    <p className="text-muted-foreground italic leading-relaxed">
-                      {learning.lesson}
-                    </p>
-                  </div>
-
-                  {/* Solution */}
-                  <div className="p-4 bg-accent/10 rounded-lg border border-accent/20">
-                    <h4 className="font-semibold text-accent mb-3">
-                      Caminho para a Solução
-                    </h4>
-                    <p className="text-foreground text-sm leading-relaxed">
-                      {learning.solution}
-                    </p>
-                  </div>
+                  <p className="text-muted-foreground text-sm italic leading-relaxed">
+                    {learning.lesson}
+                  </p>
                 </div>
-              </CardContent>
-            </Card>
+
+                {/* Solution */}
+                <div className="bg-accent/10 rounded-xl p-4 border border-accent/20">
+                  <p className="text-accent text-xs font-semibold uppercase tracking-wider mb-2">Caminho para a Solução</p>
+                  <p className="text-foreground text-sm leading-relaxed">
+                    {learning.solution}
+                  </p>
+                </div>
+              </div>
+            </article>
           ))}
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-ocean p-8 rounded-xl shadow-depth max-w-4xl mx-auto">
-            <h3 className="text-3xl font-bold text-white mb-6">
-              E Tu? O que Podes Fazer?
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <BookOpen className="w-8 h-8 text-white" />
+        {/* CTA */}
+        <div className="bg-gradient-ocean rounded-3xl p-8 md:p-12 text-center max-w-4xl mx-auto">
+          <h3 className="text-white text-2xl md:text-3xl font-heading font-bold mb-8">
+            E Tu? O que Podes Fazer?
+          </h3>
+          <div className="grid md:grid-cols-3 gap-6 mb-8">
+            {[
+              { icon: BookOpen, title: "Educa-te", desc: "Conhece a história e os problemas atuais" },
+              { icon: Users, title: "Participa", desc: "Envolve-te na comunidade e processos democráticos" },
+              { icon: Target, title: "Age", desc: "Põe em prática as lições aprendidas" }
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <div className="w-14 h-14 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                  <item.icon className="w-6 h-6 text-white" />
                 </div>
-                <h4 className="font-semibold text-white mb-2">Educate-te</h4>
-                <p className="text-white/90 text-sm">
-                  Conhece a história e os problemas atuais
-                </p>
+                <h4 className="text-white font-semibold mb-1">{item.title}</h4>
+                <p className="text-white/80 text-sm">{item.desc}</p>
               </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Users className="w-8 h-8 text-white" />
-                </div>
-                <h4 className="font-semibold text-white mb-2">Participa</h4>
-                <p className="text-white/90 text-sm">
-                  Envolve-te na comunidade e nos processos democráticos
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-3">
-                  <Target className="w-8 h-8 text-white" />
-                </div>
-                <h4 className="font-semibold text-white mb-2">Age</h4>
-                <p className="text-white/90 text-sm">
-                  Põe em prática as lições aprendidas
-                </p>
-              </div>
-            </div>
-            <Button variant="secondary" size="lg" className="font-bold">
-              Comprometer-me com a Mudança
-            </Button>
+            ))}
           </div>
+          <button className="bg-white text-secondary hover:bg-white/90 rounded-full px-8 h-12 font-semibold transition-all duration-300 hover:scale-105">
+            Comprometer-me com a Mudança
+          </button>
         </div>
       </div>
     </section>

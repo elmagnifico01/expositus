@@ -1,13 +1,11 @@
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Eye, AlertTriangle, Shield, Zap } from "lucide-react";
+import { ArrowRight, Shield, AlertTriangle, Eye, Zap } from "lucide-react";
 import { Link } from "react-router-dom";
 
 interface HiddenStory {
   id: string;
   title: string;
   preview: string;
-  fullStory: string;
   icon: React.ReactNode;
   category: "revolt" | "manipulation" | "resistance" | "corruption";
 }
@@ -17,130 +15,112 @@ const hiddenStories: HiddenStory[] = [
     id: "revolta-silenciosa-1960",
     title: "A Revolta Silenciosa de 1960",
     preview: "Uma rebelião organizada por mulheres que nunca chegou aos livros de história...",
-    fullStory: "Em 1960, as mulheres das plantações organizaram uma greve silenciosa que paralisou a economia colonial durante semanas. Lideradas por Mãe Rosa, uma anciã respeitada, elas coordenaram uma resistência pacífica mas devastadoramente eficaz. As autoridades coloniais tentaram esconder este evento, mas os relatos orais preservaram esta história de coragem feminina.",
-    icon: <Shield className="w-6 h-6" />,
+    icon: <Shield className="w-5 h-5" />,
     category: "revolt"
   },
   {
     id: "ouro-que-nunca-existiu",
     title: "O Ouro que Nunca Existiu",
     preview: "Como uma mentira sobre riquezas minerais mudou o destino das ilhas...",
-    fullStory: "Entre 1920-1940, rumores falsos sobre depósitos de ouro foram espalhados pelas autoridades para atrair mais colonos e investimento. Esta manipulação levou ao desmatamento de vastas áreas e ao sofrimento de comunidades inteiras que foram forçadas a trabalhar em minas inexistentes. A verdade só foi revelada décadas depois.",
-    icon: <AlertTriangle className="w-6 h-6" />,
+    icon: <AlertTriangle className="w-5 h-5" />,
     category: "manipulation"
   },
   {
     id: "rede-secreta-solidariedade",
     title: "A Rede Secreta de Solidariedade",
     preview: "Um sistema clandestino que salvou centenas de vidas durante a repressão...",
-    fullStory: "Durante os anos mais duros da repressão colonial, formou-se uma rede secreta de solidariedade entre diferentes comunidades. Usando sinais tradicionais e rotas secretas pelas montanhas, esta rede conseguiu salvar centenas de pessoas da perseguição política e ajudar famílias em dificuldades.",
-    icon: <Eye className="w-6 h-6" />,
+    icon: <Eye className="w-5 h-5" />,
     category: "resistance"
   },
   {
     id: "escandalo-cacau-fantasma",
     title: "O Escândalo do Cacau Fantasma",
     preview: "Milhões roubados através de plantações que só existiam no papel...",
-    fullStory: "Nos anos 80, descobriu-se um esquema onde funcionários corruptos criavam plantações fictícias de cacau para desviar fundos internacionais. O escândalo envolveu políticos de alto escalão e resultou no desaparecimento de milhões de dólares destinados ao desenvolvimento agrícola.",
-    icon: <Zap className="w-6 h-6" />,
+    icon: <Zap className="w-5 h-5" />,
     category: "corruption"
   }
 ];
 
+const getCategoryInfo = (category: string) => {
+  switch (category) {
+    case "revolt": return { label: "Revolta", color: "bg-accent text-accent-foreground" };
+    case "manipulation": return { label: "Manipulação", color: "bg-warm text-warm-foreground" };
+    case "resistance": return { label: "Resistência", color: "bg-secondary text-secondary-foreground" };
+    case "corruption": return { label: "Corrupção", color: "bg-destructive text-destructive-foreground" };
+    default: return { label: "História", color: "bg-muted text-muted-foreground" };
+  }
+};
+
 export const HiddenStoriesSection = () => {
-  const getCategoryColor = (category: string) => {
-    switch (category) {
-      case "revolt":
-        return "from-accent to-accent/80";
-      case "manipulation":
-        return "from-warm to-warm/80";
-      case "resistance":
-        return "from-secondary to-secondary/80";
-      case "corruption":
-        return "from-destructive to-destructive/80";
-      default:
-        return "from-muted to-muted/80";
-    }
-  };
-
-  const getCategoryText = (category: string) => {
-    switch (category) {
-      case "revolt":
-        return "Revolta";
-      case "manipulation":
-        return "Manipulação";
-      case "resistance":
-        return "Resistência";
-      case "corruption":
-        return "Corrupção";
-      default:
-        return "História";
-    }
-  };
-
   return (
-    <section id="historias-ocultas" className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section id="historias-ocultas" className="section-padding bg-muted/30 relative overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/5 via-transparent to-transparent" />
+      
+      <div className="container relative">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-foreground mb-6">
+        <div className="max-w-3xl mx-auto text-center mb-16 md:mb-20">
+          <p className="text-primary font-medium tracking-wider uppercase text-sm mb-4">
+            O Que Não Te Contaram
+          </p>
+          <h2 className="text-foreground mb-6">
             Histórias Ocultas
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-muted-foreground text-lg md:text-xl leading-relaxed">
             Os segredos que não te contaram na escola. Histórias de resistência, 
             manipulação e coragem que foram escondidas ou esquecidas.
           </p>
-          <div className="w-24 h-1 bg-gradient-tropical mx-auto mt-6 rounded-full"></div>
+          <div className="divider mt-8" />
         </div>
 
         {/* Stories Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-          {hiddenStories.map((story, index) => (
-            <Link key={index} to={`/historia/${story.id}`}>
-              <Card 
-                className="group hover:shadow-depth transition-all duration-500 transform hover:scale-105 cursor-pointer overflow-hidden h-full"
+        <div className="grid md:grid-cols-2 gap-6 max-w-5xl mx-auto mb-16">
+          {hiddenStories.map((story, index) => {
+            const categoryInfo = getCategoryInfo(story.category);
+            return (
+              <Link 
+                key={story.id} 
+                to={`/historia/${story.id}`}
+                className="group block"
               >
-              <CardContent className="p-0">
-                {/* Category Header */}
-                <div className={`bg-gradient-to-r ${getCategoryColor(story.category)} p-4 text-white`}>
-                  <div className="flex items-center gap-3">
-                    {story.icon}
-                    <span className="font-semibold text-sm uppercase tracking-wide">
-                      {getCategoryText(story.category)}
+                <article className="h-full bg-card rounded-2xl p-6 md:p-8 shadow-card transition-all duration-500 hover:shadow-lg hover:-translate-y-1 border border-transparent hover:border-primary/10">
+                  {/* Category Badge */}
+                  <div className="flex items-center gap-3 mb-4">
+                    <span className={`inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold ${categoryInfo.color}`}>
+                      {story.icon}
+                      {categoryInfo.label}
                     </span>
                   </div>
-                </div>
 
-                {/* Content */}
-                <div className="p-6">
-                  <h3 className="text-xl font-bold text-foreground mb-3 group-hover:text-primary transition-colors">
+                  {/* Content */}
+                  <h3 className="text-foreground group-hover:text-primary transition-colors mb-3 text-xl md:text-2xl">
                     {story.title}
                   </h3>
-                  <p className="text-muted-foreground mb-4 leading-relaxed">
+                  <p className="text-muted-foreground leading-relaxed mb-6">
                     {story.preview}
                   </p>
                   
-                  <Button variant="tropical" size="sm" className="w-full mt-4">
-                    Ler História Completa
-                  </Button>
-                </div>
-              </CardContent>
-              </Card>
-            </Link>
-          ))}
+                  {/* Link */}
+                  <div className="flex items-center gap-2 text-primary font-medium text-sm group-hover:gap-3 transition-all">
+                    <span>Ler história completa</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </div>
+                </article>
+              </Link>
+            );
+          })}
         </div>
 
-        {/* Call to Action */}
-        <div className="text-center mt-16">
-          <div className="bg-gradient-warm p-8 rounded-xl shadow-depth max-w-2xl mx-auto">
-            <h3 className="text-2xl font-bold text-warm-foreground mb-4">
-              Tens uma história oculta para partilhar?
+        {/* CTA */}
+        <div className="max-w-2xl mx-auto">
+          <div className="bg-gradient-warm rounded-3xl p-8 md:p-10 text-center shadow-lg">
+            <h3 className="text-warm-foreground text-2xl md:text-3xl font-heading font-bold mb-4">
+              Tens uma história para partilhar?
             </h3>
-            <p className="text-warm-foreground/90 mb-6">
-              Muitas histórias ainda estão por descobrir. Se conheces factos ou 
-              relatos que deviam ser partilhados, ajuda-nos a completar a nossa história.
+            <p className="text-warm-foreground/90 mb-6 leading-relaxed">
+              Muitas histórias ainda estão por descobrir. Ajuda-nos a completar a nossa história.
             </p>
-            <Button variant="secondary" size="lg">
+            <Button className="bg-white text-warm hover:bg-white/90 rounded-full px-8 h-12 font-semibold">
               Partilhar História
             </Button>
           </div>
